@@ -1,0 +1,8 @@
+{
+  "name": "eetz",
+  "version": "1.0.0",
+  "description": "Recipe Manager and Meal Planner",
+  "main": "index.js",
+  "author": "tommy tom <t.stear@gmail.com>",
+  "license": "MIT"
+}
