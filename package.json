@@ -4,5 +4,11 @@
   "description": "Recipe Manager and Meal Planner",
   "main": "index.js",
   "author": "tommy tom <t.stear@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "bcrypt": "^6.0.0",
+    "express": "^5.1.0",
+    "https": "^1.0.0",
+    "jsonwebtoken": "^9.0.2"
+  }
 }
