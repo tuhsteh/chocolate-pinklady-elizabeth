@@ -1,5 +1,5 @@
-// require('@dotenvx/dotenvx').config();
-require('dotenv').config();
+require('@dotenvx/dotenvx').config();
+// require('dotenv').config();
 require('./config/database').connect();
 const bcrypt = require('bcryptjs');
 const express = require('express');
@@ -21,5 +21,9 @@ app.post('/hello', async (req, res) => {
     res.status(500).json({ message: 'Internal Server Error' });
   }
 });
+
+// User routes ??  check the syntax for adding routes from external module
+const userRoutes = require('./routes/userRoutes');
+app.use('/users', userRoutes);
 
 module.exports = app;
