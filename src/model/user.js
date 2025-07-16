@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
-const bcrypt = require('../../node_modules/bcryptjs/umd/types');
+const bcrypt = require('bcryptjs');
 const { app } = require('../app');
 
 // user schema, first_name, last_name, email, password, token
@@ -12,4 +12,4 @@ const userSchema = new mongoose.Schema({
   token: { type: String },
 });
 
-module.exports = mongoose.model('user', userSchema); // Register
+module.exports = mongoose.model('user', userSchema);

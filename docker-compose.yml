@@ -3,7 +3,7 @@ services:
     image: mongodb/mongodb-community-server:7.0.17-ubi9
     ports:
       - '27017:27017'
-    container_name: ecstatic-ocelot-beginning
+    container_name: winter-cashew-cylinder
     restart: always
     logging:
       driver: 'json-file'

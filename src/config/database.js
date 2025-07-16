@@ -22,7 +22,6 @@ exports.connect = () => {
     })
     .catch((err) => {
       console.log(`MongoDB connection error:  [${err}]`);
-      console.error(err);
       process.exit(1);
     });
 };
