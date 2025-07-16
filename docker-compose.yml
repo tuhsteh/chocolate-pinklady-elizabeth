@@ -1,0 +1,26 @@
+services:
+  mongo:
+    image: mongodb/mongodb-community-server:7.0.17-ubi9
+    ports:
+      - '27017:27017'
+    container_name: ecstatic-ocelot-beginning
+    restart: always
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '10m'
+    env_file:
+      - .env
+    environment:
+      - MONGODB_INITDB_ENABLE_AUTHENTICATION=true
+      - MONGODB_INITDB_ENABLE_JOURNALING=true
+      - MONGODB_INITDB_ENABLE_WIREDTIGER_COMPRESSION=true
+      - MONGODB_INITDB_ENABLE_WIREDTIGER_CACHE_SIZE=256M
+    volumes:
+      - /var/lib/mongo-data:/data/db
+      # For the /tmp/mongo-data volume, permissions should be 0755 or 0700.
+      # The owner should match the user running MongoDB inside the container.
+      # The official MongoDB image runs as user 'mongodb' (UID 999) by default.
+      # To set correct ownership, run on your host:
+      #   sudo chown -R $(whoami):wheel /tmp/mongo-data
+      #   sudo chmod -R 0755 /tmp/mongo-data
