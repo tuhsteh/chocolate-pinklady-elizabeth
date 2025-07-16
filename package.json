@@ -6,6 +6,7 @@
   "author": "tommy tom <t.stear@gmail.com>",
   "license": "MIT",
   "devDependencies": {
+    "@dotenvx/dotenvx": "^1.47.6",
     "bcrypt": "^6.0.0",
     "express": "^5.1.0",
     "https": "^1.0.0",
