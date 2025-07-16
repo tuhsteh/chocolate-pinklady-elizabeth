@@ -8,6 +8,10 @@ const {
 } = process.env;
 
 console.log(`config/database:  MONGO_URI:  [${MONGO_URI}]`);
+console.log(`config/database:  MONGODB_USERNAME:  [${MONGODB_USERNAME}]`);
+console.log(
+  `config/database:  MONGODB_INITDB_DATABASE:  [${MONGODB_INITDB_DATABASE}]`
+);
 
 exports.connect = () => {
   // Connect to MongoDB

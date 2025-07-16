@@ -1,11 +1,12 @@
-require('@dotenvx/dotenvx').config();
+// require('@dotenvx/dotenvx').config();
+require('dotenv').config();
 require('./config/database').connect();
 const bcrypt = require('bcryptjs');
 const express = require('express');
 const jwt = require('jsonwebtoken');
 
 const auth = require('./middleware/auth');
-const User = require('./models/User');
+const User = require('./model/user');
 
 const app = express();
 
@@ -20,3 +21,5 @@ app.post('/hello', async (req, res) => {
     res.status(500).json({ message: 'Internal Server Error' });
   }
 });
+
+module.exports = app;
