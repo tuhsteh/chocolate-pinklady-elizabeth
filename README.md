@@ -82,5 +82,5 @@ In the future, i'd like to add pre-commit hooks so you can't commit code that do
 
 ## Author
 [`trs`](https://github.com/tuhsteh)  
-started on or about `2025-07-11T17:51:00Z-0500`.  
+started on or about `2025-07-08T17:38:00Z-0500`.  
 Collaboration with `nas`.
