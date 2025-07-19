@@ -24,8 +24,9 @@ Application for Creating a Weekly Calendar for Meal Planning.  Includes recipes,
 ### Infrastructure
 - [ ] SSL (see [Let'sEncrypt](letsencrypt.org), or option provided by hosting service)
 - [ ] Database (using MongoDB, but lots of hosting offers PostGRES primarily; can use JSON data type; requires migration/code-adaptation)
+- [ ] injectable JSON data for initialization of a new install (e.g. `yarn init` => writes data from `roles.json` into database)
 - [ ] containerization
-- [ ] hosting (see [Render](https://render.com/))
+- [ ] hosting (see [Render](https://render.com/), [Heroku](https://www.heroku.com/), other options)
 
 ### Testing
 - [ ] Jest unit tests
@@ -58,7 +59,7 @@ In the project root, use `yarn`.  Or if you prefer, you can use either `yarn` or
 $ yarn dev
 ```
 
-A lot of the tools you'll need are available on [homebrew](https://brew.sh/); here, you can find `yarn`.
+A lot of the tools you'll need are available on [homebrew](https://brew.sh/); here, you can find `yarn`, `the_silver_searcher`, and `thefuck` for instance.
 
 You'll also want [`nvm`](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating), to easily manage your install of the latest NodeJS LTS; this project calls for `^v22`.
 
