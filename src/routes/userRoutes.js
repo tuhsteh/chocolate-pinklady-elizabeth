@@ -110,4 +110,13 @@ userRoutes.post('/login', async (req, res) => {
   }
 });
 
+/** * @route GET /me
+ * @desc Get current user profile, for permissions.
+ * @access Private
+ * @returns {Object} User object
+ * @throws {401} Unauthorized if token is invalid or missing
+ * @throws {500} Internal Server Error if retrieval fails
+ */
+// TODO:  userRoutes.get('/me'...);
+
 module.exports = userRoutes;
