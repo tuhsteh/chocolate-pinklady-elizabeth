@@ -7,7 +7,7 @@ Application for Creating a Weekly Calendar for Meal Planning.  Includes recipes,
 ### App Development
 - [ ] Security
   - [ ] App Hardening (see [How to Harden Your Node.js APIs](https://www.freecodecamp.org/news/how-to-harden-your-nodejs-apis-security-best-practices/))
-  - [ ] SSL (start with [Let'sEncrypt](letsencrypt.org))
+  - [ ] SSL (start with [Let'sEncrypt](https://letsencrypt.org))
 - [ ] API for 
   - [ ] users (registration, login, me)
   - [ ] recipe CRUD
@@ -22,7 +22,7 @@ Application for Creating a Weekly Calendar for Meal Planning.  Includes recipes,
   - [ ] management
 
 ### Infrastructure
-- [ ] SSL (see [Let'sEncrypt](letsencrypt.org), or option provided by hosting service)
+- [ ] SSL (see [Let'sEncrypt](https://letsencrypt.org), or option provided by hosting service)
 - [ ] Database (using MongoDB, but lots of hosting offers PostGRES primarily; can use JSON data type; requires migration/code-adaptation)
 - [ ] injectable JSON data for initialization of a new install (e.g. `yarn init` => writes data from `roles.json` into database)
 - [ ] containerization
@@ -81,6 +81,6 @@ $ yarn lint # more rules, applied a slightly different way
 In the future, i'd like to add pre-commit hooks so you can't commit code that doesn't match the style, or has other JS issues. That probably won't happen in this project.
 
 ## Author
-[`trs`](github.com/tuhsteh)  
+[`trs`](https://github.com/tuhsteh)  
 started on or about `2025-07-11T17:51:00Z-0500`.  
 Collaboration with `nas`.
