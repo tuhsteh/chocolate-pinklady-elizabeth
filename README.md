@@ -1,14 +1,15 @@
 # eetz
 
-Application for Creating a Weekly Calendar for Meal Planning.  Includes recipes, weekly schedule, ingredients and shopping lists, and family sharing.
+Application for Creating a Weekly Calendar for Meal Planning. Includes recipes, weekly schedule, ingredients and shopping lists, and family sharing.
 
 ## TODOs
 
 ### App Development
+
 - [ ] Security
   - [ ] App Hardening (see [How to Harden Your Node.js APIs](https://www.freecodecamp.org/news/how-to-harden-your-nodejs-apis-security-best-practices/))
   - [ ] SSL (start with [Let'sEncrypt](https://letsencrypt.org))
-- [ ] API for 
+- [ ] API for
   - [ ] users (registration, login, me)
   - [ ] recipe CRUD
   - [ ] schedule CRUD
@@ -22,6 +23,7 @@ Application for Creating a Weekly Calendar for Meal Planning.  Includes recipes,
   - [ ] management
 
 ### Infrastructure
+
 - [ ] SSL (see [Let'sEncrypt](https://letsencrypt.org), or option provided by hosting service)
 - [ ] Database (using MongoDB, but lots of hosting offers PostGRES primarily; can use JSON data type; requires migration/code-adaptation)
 - [ ] injectable JSON data for initialization of a new install (e.g. `yarn init` => writes data from `roles.json` into database)
@@ -29,6 +31,7 @@ Application for Creating a Weekly Calendar for Meal Planning.  Includes recipes,
 - [ ] hosting (see [Render](https://render.com/), [Heroku](https://www.heroku.com/), other options)
 
 ### Testing
+
 - [ ] Jest unit tests
 - [ ] Cypress.io integration testing
 
@@ -49,11 +52,11 @@ Testing will be built in Jest, Cypress.io, or some combination thereof.
 
 ### 1. Database
 
-Start with `docker-compose up -d`.  Fix any errors you find there.
+Start with `docker-compose up -d`. Fix any errors you find there.
 
 ### 2. Application
 
-In the project root, use `yarn`.  Or if you prefer, you can use either `yarn` or `npm` to start.  The preference is for `yarn`.  Frankly, `yarn` is the way to go.  Personally, `yarn` is the best choice.
+In the project root, use `yarn`. Or if you prefer, you can use either `yarn` or `npm` to start. The preference is for `yarn`. Frankly, `yarn` is the way to go. Personally, `yarn` is the best choice.
 
 ```shell
 $ yarn dev
@@ -65,7 +68,7 @@ You'll also want [`nvm`](https://github.com/nvm-sh/nvm?tab=readme-ov-file#instal
 
 ## Contributing
 
-If you'd like to join in, well, that's strange. This is a personal project; it originated in the needs of a specific household; it doesn't accomplish much; you could build your own thing instead.  But hey, i'm not your *real* dad.
+If you'd like to join in, well, that's strange. This is a personal project; it originated in the needs of a specific household; it doesn't accomplish much; you could build your own thing instead. But hey, i'm not your _real_ dad.
 
 ### Keep Things Clean
 
@@ -81,6 +84,7 @@ $ yarn lint # more rules, applied a slightly different way
 In the future, i'd like to add pre-commit hooks so you can't commit code that doesn't match the style, or has other JS issues. That probably won't happen in this project.
 
 ## Author
+
 [`trs`](https://github.com/tuhsteh)  
 started on or about `2025-07-08T17:38:00Z-0500`.  
 Collaboration with `nas`.

@@ -29,7 +29,7 @@ userRoutes.post('/register', async (req, res) => {
     if (existingUser) {
       return res.status(409).json({ message: registerError });
     }
-    
+
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await User.create({
       first_name: firstName,
@@ -38,14 +38,14 @@ userRoutes.post('/register', async (req, res) => {
       password: hashedPassword,
       invitation,
     });
-    
+
     const token = jwt.sign(
       { user_id: user._id, email },
       process.env.TOKEN_KEY,
       { expiresIn: '15m' }
     );
     user.token = token;
-    
+
     // isn't this dangerous?
     // res.status(201).json(user);
     res.status(201).json({
