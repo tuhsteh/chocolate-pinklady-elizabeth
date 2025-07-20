@@ -1,31 +1,15 @@
-const mongoose = require('mongoose');
+const { Pool } = require('pg');
+require('dotenv').config();
 
-const {
-  MONGO_URI,
-  MONGODB_USERNAME,
-  MONGODB_PASSWORD,
-  MONGODB_INITDB_DATABASE,
-} = process.env;
+const pool = new Pool({
+  // connectionString: process.env.POSTGRES_URI,
+  host: process.env.POSTGRES_HOST || '127.0.0.1',
+  port: process.env.POSTGRES_PORT || 5432,
+  user: process.env.POSTGRES_USER,
+  password: process.env.POSTGRES_PASSWORD,
+  database: process.env.POSTGRES_DB,
+});
 
-console.log(`config/database:  MONGO_URI:  [${MONGO_URI}]`);
-console.log(`config/database:  MONGODB_USERNAME:  [${MONGODB_USERNAME}]`);
-console.log(
-  `config/database:  MONGODB_INITDB_DATABASE:  [${MONGODB_INITDB_DATABASE}]`
-);
-
-exports.connect = () => {
-  // Connect to MongoDB
-  mongoose
-    .connect(MONGO_URI, {
-      user: MONGODB_USERNAME,
-      pass: MONGODB_PASSWORD,
-      dbName: MONGODB_INITDB_DATABASE,
-    })
-    .then(() => {
-      console.log('MongoDB connected successfully');
-    })
-    .catch((err) => {
-      console.log(`MongoDB connection error:  [${err}]`);
-      process.exit(1);
-    });
+module.exports = {
+  pool,
 };
