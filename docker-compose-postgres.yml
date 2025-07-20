@@ -14,9 +14,18 @@ services:
       timeout: 10s
       retries: 10
     volumes:
-      - /var/lib/postgres-data:/data/db
-      # For the /var/lib/postgres-data volume, permissions should be 0755 or 0700.
-      # The owner should match the user running Postgres inside the container.
-      # To set correct ownership, run on your host:
-      #   sudo chown -R $(whoami):wheel /var/lib/postgres-data
-      #   sudo chmod -R 0755 /var/lib/postgres-data
+      - pgdata:/var/lib/postgresql/data
+
+
+volumes:
+  pgdata:
+    driver: local
+    driver_opts:
+      type: none
+      device: /var/lib/postgres-data
+      o: bind
+    # This volume is used to persist Postgres data across container restarts.
+    # Ensure the host directory exists and has the correct permissions.
+    # To set correct ownership, run on your host:
+    #   sudo chown -R $(whoami):wheel /var/lib/postgres-data
+    #   sudo chmod -R 0755 /var/lib/postgres-data
