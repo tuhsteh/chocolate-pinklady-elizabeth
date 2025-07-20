@@ -1,0 +1,22 @@
+services:
+  postgres:
+    container_name: soda-bracket-windmill
+    image: postgres:14.18
+    restart: always
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env  
+      # .env cannot be dotenvx encrypted.
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 1s
+      timeout: 10s
+      retries: 10
+    volumes:
+      - /var/lib/postgres-data:/data/db
+      # For the /var/lib/postgres-data volume, permissions should be 0755 or 0700.
+      # The owner should match the user running Postgres inside the container.
+      # To set correct ownership, run on your host:
+      #   sudo chown -R $(whoami):wheel /var/lib/postgres-data
+      #   sudo chmod -R 0755 /var/lib/postgres-data
