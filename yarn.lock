@@ -241,6 +241,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@prisma/client@npm:^6.12.0":
+  version: 6.12.0
+  resolution: "@prisma/client@npm:6.12.0"
+  peerDependencies:
+    prisma: "*"
+    typescript: ">=5.1.0"
+  peerDependenciesMeta:
+    prisma:
+      optional: true
+    typescript:
+      optional: true
+  checksum: 10c0/eabdfc89e9de0b31ae8997811d0ad36650d1f70b46d6852f05d53e963d3b6c3d6b7849bb720ed5df74f9e8173b659f6d4f8c7611ddca20cf68bb8f191cc9c8b3
+  languageName: node
+  linkType: hard
+
 "@stylistic/eslint-plugin@npm:^5.1.0":
   version: 5.1.0
   resolution: "@stylistic/eslint-plugin@npm:5.1.0"
@@ -739,6 +754,7 @@ __metadata:
   resolution: "eetz@workspace:."
   dependencies:
     "@dotenvx/dotenvx": "npm:^1.47.6"
+    "@prisma/client": "npm:^6.12.0"
     "@stylistic/eslint-plugin": "npm:^5.1.0"
     bcryptjs: "npm:^3.0.2"
     body-parser: "npm:^2.2.0"

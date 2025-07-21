@@ -1,0 +1,3 @@
+
+# Skip the path where 'Prisma' places its generated ORM and Client sources
+generated
