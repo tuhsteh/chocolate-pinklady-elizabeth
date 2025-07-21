@@ -30,5 +30,6 @@
     "eslint": "^9.31.0",
     "nodemon": "^3.1.10",
     "prettier": "^3.6.2"
-  }
+  },
+  "packageManager": "yarn@4.9.2"
 }
