@@ -4,6 +4,8 @@ Application for Creating a Weekly Calendar for Meal Planning. Includes recipes, 
 
 ## TODOs
 
+- [x] make readme
+
 ### App Development
 
 - [ ] Security
