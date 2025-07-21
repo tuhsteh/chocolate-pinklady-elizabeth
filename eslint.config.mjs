@@ -10,7 +10,7 @@ export default [
       '@stylistic/eol-last': ['error', 'always'],
       '@stylistic/indent': ['error', 2],
       '@stylistic/jsx-indent': 'error',
-      '@stylistic/semi': 'error'
+      '@stylistic/semi': 'error',
     },
-  }
+  },
 ];
