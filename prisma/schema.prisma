@@ -14,31 +14,53 @@ datasource db {
   url      = env("POSTGRES_URI")
 }
 
-// Data model
-
 model User {
-  id         Int     @id @default(autoincrement())
-  email      String  @unique
-  firstName  String
-  lastName   String
-  password   String
-  token      String
-}
+  id           Int         @id @default(autoincrement())
+  email        String      @unique @db.VarChar(255)
+  firstName    String
+  lastName     String
+  password     String
+  role         Role        @default(SHOPPER)
 
-model Role {
-  id     Int         @id @default(autoincrement())
-  name   String      @unique
-  grant  String[]
-}
+  recipes      Recipe[]
+  invitations  Invitation[]
 
-model Recipe {
-  id          Int         @id @default(autoincrement())
-  name        String
-  ingredients String[]
-  url         String
+  @@unique([firstName,lastName])
 }
 
 model Invitation {
-  id          Int        @id @default(autoincrement())
-  code        String     @unique
+  id           Int         @id @default(autoincrement())
+  createdAt    DateTime    @default(now())
+  expiresAt    DateTime
+  creator      User        @relation(fields: [creatorId], references: [id])
+  creatorId    Int
+  uses         Int         @default(0)
+  code         String      @unique @default(cuid())
+  inviteEmail  String      @db.VarChar(255)
+}
+
+enum Role {
+  DINER
+  SHOPPER
+  ADMIN
+}
+
+model Recipe {
+  id           Int         @id @default(autoincrement())
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  title        String      @db.VarChar(255)
+  url          String?     @db.VarChar(255)
+  ingredients  String[]  
+  creator      User        @relation(fields: [creatorId], references: [id])
+  creatorId    Int
+  complexity   Complexity   
+}
+
+enum Complexity {
+  LOW
+  MEDIUM_LOW
+  MEDIUM
+  MEDIUM_HIGH
+  HIGH
 }
