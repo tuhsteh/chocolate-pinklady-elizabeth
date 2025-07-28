@@ -100,9 +100,7 @@ const getUserByEmail = async function getUserByEmail(email) {
     const { id, firstName, lastName, email, password, role } = user;
     return { id, firstName, lastName, email, password, role };
   } catch (error) {
-    console.error(
-      `Error fetching user with email ${email}:  ${error}`
-    );
+    console.error(`Error fetching user with email ${email}:  ${error}`);
     throw new Error(findError);
   }
 };
