@@ -1,12 +1,66 @@
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+import CodedError from './codedError';
+
+import { generateToken } from '../middleware/auth';
 
 const findError = 'User Operation Failed.';
 const registerError = 'User Operation Failed.';
 const updateError = 'User Operation Failed.';
 
 const prisma = new PrismaClient();
+
+/**
+ * Create a new user.
+ * @param {Object} data
+ * @returns {Object} Created user object
+ * @throws {Error} If user creation fails
+ */
+const createUser = async function createUser(data) {
+  try {
+    const encryptedPassword = await bcrypt.hash(data.password, 10);
+
+    // validate inviteCode
+    const foundInvite = await prisma.invitation.findOne({
+      where: {
+        AND: [
+          { code: data.inviteCode },
+          { expires: { gte: new Date() } },
+          { email: data.email },
+        ],
+      },
+    });
+
+    if (!foundInvite) {
+      console.error('InviteCode missing or invalid');
+      throw new CodedError({ code: 422, reason: registerError });
+    }
+
+    const user = await prisma.user.create({
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email.toLowerCase(),
+      inviteCode: data.inviteCode.toLowerCase(),
+      password: encryptedPassword,
+      role: data.role || 'DINER', // Default to 'USER' if not provided
+    });
+
+    // TODO update the 'uses' count on the Invite code
+
+    try {
+      const token = generateToken({ userId: user.id, email: user.email });
+      user.token = token;
+    } catch (ce) {
+      console.error(`Token error.  ${ce.reason}`);
+      throw new CodedError({ code: ce.code, reason: ce.reason });
+    }
+    const { id, firstName, lastName, email, token } = user;
+    return { id, firstName, lastName, email, token };
+  } catch (error) {
+    console.error(`Error creating user:  ${error}`);
+    throw new CodedError({ code: 403, reason: registerError });
+  }
+};
 
 /**
  * Find a user by userID.
@@ -19,11 +73,11 @@ const getUserById = async function getUserById(userId) {
     const user = await prisma.user.findUnique({
       where: { id: userId },
     });
-    const { id, firstName, lastName, email, role } = user;
-    return { id, firstName, lastName, email, role };
+    const { id, firstName, lastName, email, password, role } = user;
+    return { id, firstName, lastName, email, password, role };
   } catch (error) {
     console.error(
-      `Error fetching user with ID ${userId}:  ${JSON.stringify(error)}`,
+      `Error fetching user with ID ${userId}:  ${JSON.stringify(error)}`
     );
     throw new Error(findError);
   }
@@ -43,48 +97,13 @@ const getUserByEmail = async function getUserByEmail(email) {
     if (!user) {
       throw new Error(findError);
     }
-    const { id, firstName, lastName, email: userEmail, role } = user;
-    return { id, firstName, lastName, email: userEmail, role };
+    const { id, firstName, lastName, email, password, role } = user;
+    return { id, firstName, lastName, email, password, role };
   } catch (error) {
     console.error(
-      `Error fetching user with email ${email}:  ${JSON.stringify(error)}`,
+      `Error fetching user with email ${email}:  ${JSON.stringify(error)}`
     );
     throw new Error(findError);
-  }
-};
-
-/**
- * Create a new user.
- * @param {Object: UserCreateData} data
- * @returns {Object} Created user object
- * @throws {Error} If user creation fails
- */
-const createUser = async function createUser(data) {
-  try {
-    const encryptedPassword = await bcrypt.hash(data.password, 10);
-
-    const user = await prisma.user.create({
-      data: {
-        firstName: data.firstName,
-        lastName: data.lastName,
-        email: data.email.toLowerCase(),
-        inviteCode: data.inviteCode.toLowerCase(),
-        password: encryptedPassword,
-        role: data.role || 'DINER', // Default to 'USER' if not provided
-      },
-    });
-
-    const token = jwt.sign(
-      { user_id: user.id, email: user.email },
-      process.env.TOKEN_KEY,
-      { expiresIn: '15m' },
-    );
-    user.token = token;
-    const { id, firstName, lastName, email } = user;
-    return { id, firstName, lastName, email };
-  } catch (error) {
-    console.error(`Error creating user:  ${JSON.stringify(error)}`);
-    throw new Error(registerError);
   }
 };
 
@@ -100,18 +119,18 @@ const updateUser = async function updateUser(userId, data) {
       throw new Error(updateError);
     }
     const foundUser = prisma.user.findUnique({
-      where: { OR: [ { id: userId }, { email: data.email } ] },
+      where: { OR: [{ id: userId }, { email: data.email }] },
     });
     if (!foundUser) {
       console.error(
-        `UPDATE:  User with ID ${userId} or email ${data.email} does not exist.`,
+        `UPDATE:  User with ID ${userId} or email ${data.email} does not exist.`
       );
       throw new Error(updateError);
     }
     const encryptedPassword =
-      '' != data.password && null != data.password
+      ('' != data.password && null != data.password)
         ? await bcrypt.hash(data.password, 10)
-        : await bcrypt.hash(foundUser.password, 10);
+        : foundUser.password;  // don't doubly encrypt the password
     const user = await prisma.user.update({
       where: { id: userId },
       data: {
@@ -125,9 +144,7 @@ const updateUser = async function updateUser(userId, data) {
     });
     return user;
   } catch (error) {
-    console.error(
-      `Error updating user with ID ${userId}:  ${JSON.stringify(error)}`,
-    );
+    console.error(`Error updating user with ID ${userId}:  ${error}`);
     throw new Error(updateError);
   }
 };

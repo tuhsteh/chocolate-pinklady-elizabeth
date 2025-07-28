@@ -6,6 +6,4 @@ class Role {
   // maybe methods for permissions, but maybe those go in another class?
 }
 
-export default {
-  Role,
-};
+export default Role;
