@@ -93,7 +93,7 @@ userRoutes.post('/login', async (req, res) => {
       }
 
       console.log(
-        `User login:  [${user.first_name} ${user.last_name} <${user.email}>]`
+        `User login:  [${user.first_name} ${user.last_name} <${user.email}>]`,
       );
 
       return res.status(200).json({
@@ -119,9 +119,10 @@ userRoutes.post('/login', async (req, res) => {
  * @returns {String} welcome string
  * @throws {401} if token is missing
  * @throws {403} if token is bad
- */ 
+ */
 userRoutes.post('/welcome', async (req, res) => {
-  const token = req.body.token || req.query.token || req.headers['x-access-token'];
+  const token =
+    req.body.token || req.query.token || req.headers['x-access-token'];
   const userOrError = verifyToken(token);
   if (userOrError.code && userOrError.reason) {
     res.status(userOrError.code).json(userOrError.reason);

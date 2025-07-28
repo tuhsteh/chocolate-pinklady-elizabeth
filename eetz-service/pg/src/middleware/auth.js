@@ -20,11 +20,11 @@ const generateToken = async function generateToken(data) {
       return token;
     } catch (error) {
       console.error('Data Error generating token.');
-      throw new CodedError( { code: 422, reason: tokenError } );
+      throw new CodedError({ code: 422, reason: tokenError });
     }
   }
-  console.error('Error generating token.')
-  throw new CodedError( { code: 500, reason: tokenError } );
+  console.error('Error generating token.');
+  throw new CodedError({ code: 500, reason: tokenError });
 };
 
 /**
@@ -37,14 +37,14 @@ const verifyToken = async function verifyToken(data) {
 
   if (!token) {
     console.error('Token not valid.');
-    throw new CodedError( { code: 403, reason: tokenError } );
+    throw new CodedError({ code: 403, reason: tokenError });
   }
   try {
     const decoded = jwt.verify(token, process.env.TOKEN_KEY);
     return decoded;
   } catch (error) {
     console.error(`Unauthorized:  Invalid Token.  ${JSON.stringify(error)}`);
-    throw new CodedError( { code: 401, reason: tokenError } );
+    throw new CodedError({ code: 401, reason: tokenError });
   }
 };
 

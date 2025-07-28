@@ -77,7 +77,7 @@ const getUserById = async function getUserById(userId) {
     return { id, firstName, lastName, email, password, role };
   } catch (error) {
     console.error(
-      `Error fetching user with ID ${userId}:  ${JSON.stringify(error)}`
+      `Error fetching user with ID ${userId}:  ${JSON.stringify(error)}`,
     );
     throw new Error(findError);
   }
@@ -101,7 +101,7 @@ const getUserByEmail = async function getUserByEmail(email) {
     return { id, firstName, lastName, email, password, role };
   } catch (error) {
     console.error(
-      `Error fetching user with email ${email}:  ${JSON.stringify(error)}`
+      `Error fetching user with email ${email}:  ${error}`
     );
     throw new Error(findError);
   }
@@ -110,8 +110,8 @@ const getUserByEmail = async function getUserByEmail(email) {
 /**
  * Update one or more fields of a user.
  * @param {Integer} userId the ID of the user to update
- * @param {Object} data, including all fields, whether updating or not.
- * @returns
+ * @param {Object} data, including all fields, whether updating or not
+ * @returns {Object} updated user doc
  */
 const updateUser = async function updateUser(userId, data) {
   try {
@@ -119,18 +119,18 @@ const updateUser = async function updateUser(userId, data) {
       throw new Error(updateError);
     }
     const foundUser = prisma.user.findUnique({
-      where: { OR: [{ id: userId }, { email: data.email }] },
+      where: { OR: [ { id: userId }, { email: data.email } ] },
     });
     if (!foundUser) {
       console.error(
-        `UPDATE:  User with ID ${userId} or email ${data.email} does not exist.`
+        `UPDATE:  User with ID ${userId} or email ${data.email} does not exist.`,
       );
       throw new Error(updateError);
     }
     const encryptedPassword =
-      ('' != data.password && null != data.password)
+      '' != data.password && null != data.password
         ? await bcrypt.hash(data.password, 10)
-        : foundUser.password;  // don't doubly encrypt the password
+        : foundUser.password; // don't doubly encrypt the password
     const user = await prisma.user.update({
       where: { id: userId },
       data: {
