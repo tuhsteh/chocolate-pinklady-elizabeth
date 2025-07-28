@@ -9,6 +9,8 @@ const config = {
   tabWidth: 2,
   semi: true,
   singleQuote: true,
+  bracketSameLine: true,
+  arrowParens: 'always',
 };
 
 module.exports = config;
