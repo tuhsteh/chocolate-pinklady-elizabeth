@@ -5,12 +5,12 @@
  * @type {import("prettier").Config}
  */
 const config = {
-  trailingComma: 'es5',
-  tabWidth: 2,
+  arrowParens: 'always',
+  bracketSameLine: true,
   semi: true,
   singleQuote: true,
-  bracketSameLine: true,
-  arrowParens: 'always',
+  tabWidth: 2,
+  trailingComma: 'es5',
 };
 
 module.exports = config;
