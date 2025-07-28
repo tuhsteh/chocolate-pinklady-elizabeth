@@ -13,4 +13,4 @@ const config = {
   trailingComma: 'all',
 };
 
-module.exports = config;
+export default config;

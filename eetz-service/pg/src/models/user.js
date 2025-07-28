@@ -132,7 +132,7 @@ const updateUser = async function updateUser(userId, data) {
   }
 };
 
-module.exports = {
+export default {
   createUser,
   getUserByEmail,
   getUserById,
