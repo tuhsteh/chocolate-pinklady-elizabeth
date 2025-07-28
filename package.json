@@ -4,12 +4,10 @@
   "description": "Recipe Manager and Meal Planner",
   "main": "index.js",
   "scripts": {
+    "build": "yarn prettier --write . && yarn eslint --fix .",
     "dev": "nodemon index.js",
     "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint --fix .",
-    "prettier": "prettier --write .",
-    "build": ""
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "tommy tom",
   "license": "MIT",
