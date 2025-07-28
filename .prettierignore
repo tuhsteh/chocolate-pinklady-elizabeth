@@ -1,4 +1,5 @@
 
 # Skip the path where 'Prisma' places its generated ORM and Client sources
-.../generated
-.../prisma/migrations
+**/generated
+**/prisma/migrations
+schema.prisma
