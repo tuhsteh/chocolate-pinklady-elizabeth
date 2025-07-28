@@ -22,7 +22,6 @@ export default [
       '@stylistic/indent': [ 'error', 2 ],
       '@stylistic/keyword-spacing': 'error',
       '@stylistic/no-multiple-empty-lines': [ 'error', { max: 2, maxEOF: 2 } ],
-      '@stylistic/no-trailing-spaces': 'error',
       '@stylistic/object-curly-spacing': [ 'error', 'always' ],
     },
   },

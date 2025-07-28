@@ -3,7 +3,6 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 
 const auth = require('../middleware/auth');
-const User = require('../model/user');
 
 const userRoutes = express();
 
@@ -19,6 +18,7 @@ userRoutes.use(express.json());
  * @throws {500} Internal Server Error if registration fails
  */
 const registerError = 'Failed to Register User.  Try again later.';
+
 userRoutes.post('/register', async (req, res) => {
   try {
     const { firstName, lastName, email, password, invitation } = req.body;
@@ -72,6 +72,7 @@ userRoutes.post('/register', async (req, res) => {
  * @throws {500} Internal Server Error if login fails
  */
 const loginError = 'Failed to Login User.  Try again later.';
+
 userRoutes.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
