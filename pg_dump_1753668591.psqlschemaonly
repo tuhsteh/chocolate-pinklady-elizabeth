@@ -1,0 +1,302 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 14.18 (Debian 14.18-1.pgdg120+1)
+-- Dumped by pg_dump version 14.18 (Homebrew)
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+DROP DATABASE IF EXISTS "EetzDb";
+--
+-- Name: EetzDb; Type: DATABASE; Schema: -; Owner: postgres
+--
+
+CREATE DATABASE "EetzDb" WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE = 'en_US.utf8';
+
+
+ALTER DATABASE "EetzDb" OWNER TO postgres;
+
+\connect "EetzDb"
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: Complexity; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public."Complexity" AS ENUM (
+    'LOW',
+    'MEDIUM_LOW',
+    'MEDIUM',
+    'MEDIUM_HIGH',
+    'HIGH'
+);
+
+
+ALTER TYPE public."Complexity" OWNER TO postgres;
+
+--
+-- Name: Role; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public."Role" AS ENUM (
+    'DINER',
+    'SHOPPER',
+    'ADMIN'
+);
+
+
+ALTER TYPE public."Role" OWNER TO postgres;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: Invitation; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."Invitation" (
+    id integer NOT NULL,
+    "createdAt" timestamp(3) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    "expiresAt" timestamp(3) without time zone NOT NULL,
+    "creatorId" integer NOT NULL,
+    uses integer DEFAULT 0 NOT NULL,
+    code text NOT NULL,
+    "inviteEmail" character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public."Invitation" OWNER TO postgres;
+
+--
+-- Name: Invitation_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public."Invitation_id_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."Invitation_id_seq" OWNER TO postgres;
+
+--
+-- Name: Invitation_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public."Invitation_id_seq" OWNED BY public."Invitation".id;
+
+
+--
+-- Name: Recipe; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."Recipe" (
+    id integer NOT NULL,
+    "createdAt" timestamp(3) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    "updatedAt" timestamp(3) without time zone NOT NULL,
+    title character varying(255) NOT NULL,
+    url character varying(255),
+    ingredients text[],
+    "creatorId" integer NOT NULL,
+    complexity public."Complexity" NOT NULL
+);
+
+
+ALTER TABLE public."Recipe" OWNER TO postgres;
+
+--
+-- Name: Recipe_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public."Recipe_id_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."Recipe_id_seq" OWNER TO postgres;
+
+--
+-- Name: Recipe_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public."Recipe_id_seq" OWNED BY public."Recipe".id;
+
+
+--
+-- Name: User; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."User" (
+    id integer NOT NULL,
+    email character varying(255) NOT NULL,
+    "firstName" text NOT NULL,
+    "lastName" text NOT NULL,
+    password text NOT NULL,
+    role public."Role" DEFAULT 'SHOPPER'::public."Role" NOT NULL
+);
+
+
+ALTER TABLE public."User" OWNER TO postgres;
+
+--
+-- Name: User_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public."User_id_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."User_id_seq" OWNER TO postgres;
+
+--
+-- Name: User_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public."User_id_seq" OWNED BY public."User".id;
+
+
+--
+-- Name: _prisma_migrations; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public._prisma_migrations (
+    id character varying(36) NOT NULL,
+    checksum character varying(64) NOT NULL,
+    finished_at timestamp with time zone,
+    migration_name character varying(255) NOT NULL,
+    logs text,
+    rolled_back_at timestamp with time zone,
+    started_at timestamp with time zone DEFAULT now() NOT NULL,
+    applied_steps_count integer DEFAULT 0 NOT NULL
+);
+
+
+ALTER TABLE public._prisma_migrations OWNER TO postgres;
+
+--
+-- Name: Invitation id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Invitation" ALTER COLUMN id SET DEFAULT nextval('public."Invitation_id_seq"'::regclass);
+
+
+--
+-- Name: Recipe id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Recipe" ALTER COLUMN id SET DEFAULT nextval('public."Recipe_id_seq"'::regclass);
+
+
+--
+-- Name: User id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."User" ALTER COLUMN id SET DEFAULT nextval('public."User_id_seq"'::regclass);
+
+
+--
+-- Name: Invitation Invitation_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Invitation"
+    ADD CONSTRAINT "Invitation_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: Recipe Recipe_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Recipe"
+    ADD CONSTRAINT "Recipe_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: User User_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."User"
+    ADD CONSTRAINT "User_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: _prisma_migrations _prisma_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public._prisma_migrations
+    ADD CONSTRAINT _prisma_migrations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: Invitation_code_key; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX "Invitation_code_key" ON public."Invitation" USING btree (code);
+
+
+--
+-- Name: User_email_key; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX "User_email_key" ON public."User" USING btree (email);
+
+
+--
+-- Name: User_firstName_lastName_key; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX "User_firstName_lastName_key" ON public."User" USING btree ("firstName", "lastName");
+
+
+--
+-- Name: Invitation Invitation_creatorId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Invitation"
+    ADD CONSTRAINT "Invitation_creatorId_fkey" FOREIGN KEY ("creatorId") REFERENCES public."User"(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
+-- Name: Recipe Recipe_creatorId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Recipe"
+    ADD CONSTRAINT "Recipe_creatorId_fkey" FOREIGN KEY ("creatorId") REFERENCES public."User"(id) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
