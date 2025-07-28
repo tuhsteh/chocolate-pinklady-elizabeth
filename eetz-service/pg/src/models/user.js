@@ -14,7 +14,7 @@ const prisma = new PrismaClient();
  * @returns {Object} User object partial, containing firstName, lastName, email, and role
  * @throws {Error} If user not found or database error
  */
-async function getUserById(userId) {
+const getUserById = async function getUserById(userId) {
   try {
     const user = await prisma.user.findUnique({
       where: { id: userId },
@@ -27,7 +27,7 @@ async function getUserById(userId) {
     );
     throw new Error(findError);
   }
-}
+};
 
 /**
  * Find a user by email.
@@ -35,7 +35,7 @@ async function getUserById(userId) {
  * @returns {Object} User object partial, containing firstName, lastName, email, and role
  * @throws {Error} If user not found or database error
  */
-async function getUserByEmail(email) {
+const getUserByEmail = async function getUserByEmail(email) {
   try {
     const user = await prisma.user.findUnique({
       where: { email: email.toLowerCase() },
@@ -51,7 +51,7 @@ async function getUserByEmail(email) {
     );
     throw new Error(findError);
   }
-}
+};
 
 /**
  * Create a new user.
@@ -59,7 +59,7 @@ async function getUserByEmail(email) {
  * @returns {Object} Created user object
  * @throws {Error} If user creation fails
  */
-async function createUser(data) {
+const createUser = async function createUser(data) {
   try {
     const encryptedPassword = await bcrypt.hash(data.password, 10);
 
@@ -86,7 +86,7 @@ async function createUser(data) {
     console.error(`Error creating user:  ${JSON.stringify(error)}`);
     throw new Error(registerError);
   }
-}
+};
 
 /**
  * Update one or more fields of a user.
@@ -94,7 +94,7 @@ async function createUser(data) {
  * @param {Object} data, including all fields, whether updating or not.
  * @returns
  */
-async function updateUser(userId, data) {
+const updateUser = async function updateUser(userId, data) {
   try {
     if (!data.firstName || !data.lastName || !data.email) {
       throw new Error(updateError);
@@ -109,8 +109,8 @@ async function updateUser(userId, data) {
       throw new Error(updateError);
     }
     const encryptedPassword =
-      '' != data.password && null != data.password ?
-        await bcrypt.hash(data.password, 10)
+      '' != data.password && null != data.password
+        ? await bcrypt.hash(data.password, 10)
         : await bcrypt.hash(foundUser.password, 10);
     const user = await prisma.user.update({
       where: { id: userId },
@@ -130,4 +130,11 @@ async function updateUser(userId, data) {
     );
     throw new Error(updateError);
   }
-}
+};
+
+module.exports = {
+  createUser,
+  getUserByEmail,
+  getUserById,
+  updateUser,
+};
