@@ -42,7 +42,7 @@ userRoutes.post('/register', async (req, res) => {
     const token = jwt.sign(
       { user_id: user._id, email },
       process.env.TOKEN_KEY,
-      { expiresIn: '15m' }
+      { expiresIn: '15m' },
     );
     user.token = token;
 
@@ -83,12 +83,12 @@ userRoutes.post('/login', async (req, res) => {
       const token = jwt.sign(
         { user_id: user._id, email },
         process.env.TOKEN_KEY,
-        { expiresIn: '15m' }
+        { expiresIn: '15m' },
       );
       user.token = token;
 
       console.log(
-        `User login:  [${user.first_name} ${user.last_name} <${user.email}>]`
+        `User login:  [${user.first_name} ${user.last_name} <${user.email}>]`,
       );
 
       // isn't this dangerous?
