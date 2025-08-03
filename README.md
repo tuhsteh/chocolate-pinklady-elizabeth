@@ -12,7 +12,8 @@ Application for Creating a Weekly Calendar for Meal Planning. Includes recipes, 
   - [ ] App Hardening (see [How to Harden Your Node.js APIs](https://www.freecodecamp.org/news/how-to-harden-your-nodejs-apis-security-best-practices/))
   - [ ] SSL (start with [Let'sEncrypt](https://letsencrypt.org))
 - [ ] API for
-  - [ ] users (registration, login, me)
+  - [x] users (registration, login, me)
+  - [ ] families (with user membership, recipe sharing, etc)
   - [ ] recipe CRUD
   - [ ] schedule CRUD
   - [ ] shopping list CRUD
@@ -27,7 +28,7 @@ Application for Creating a Weekly Calendar for Meal Planning. Includes recipes, 
 ### Infrastructure
 
 - [ ] SSL (see [Let'sEncrypt](https://letsencrypt.org), or option provided by hosting service)
-- [ ] Database (using MongoDB, but lots of hosting offers PostGRES primarily; can use JSON data type; requires migration/code-adaptation)
+- [X] Database (using MongoDB, but lots of hosting offers PostGRES primarily; can use JSON data type; requires migration/code-adaptation)
 - [ ] injectable JSON data for initialization of a new install (e.g. `yarn init` => writes data from `roles.json` into database)
 - [ ] containerization
 - [ ] hosting (see [Render](https://render.com/), [Heroku](https://www.heroku.com/), other options)
@@ -77,13 +78,12 @@ If you'd like to join in, well, that's strange. This is a personal project; it o
 In the `package.json`, there are a couple items you can use to make sure we get along when it comes to code style and such.
 
 ```shell
-$ yarn prettier # format code according to '@stylistic/es-lint' rules
-$ yarn lint # more rules, applied a slightly different way
+$ yarn build # format code according to '@stylistic/es-lint' and some other rule sets
 ```
 
 ### Westward Expansion
 
-In the future, i'd like to add pre-commit hooks so you can't commit code that doesn't match the style, or has other JS issues. That probably won't happen in this project.
+In the future, i'd like to add pre-commit hooks so you can't commit code that doesn't match the style, or that has other JS issues. That probably won't happen in this project.
 
 ## Author
 
