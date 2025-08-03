@@ -1,14 +1,24 @@
-import { PrismaClient } from '@prisma/client';
-import bcrypt from 'bcryptjs';
-import CodedError from './codedError';
+const { PrismaClient } = require('../generated/prisma');
+const bcrypt = require('bcryptjs');
+const { CodedError } = require('./codedError.js');
 
-import { generateToken } from '../middleware/auth';
+const { generateToken } = require('../middleware/auth.js');
 
 const findError = 'User Operation Failed.';
 const registerError = 'User Operation Failed.';
 const updateError = 'User Operation Failed.';
 
 const prisma = new PrismaClient();
+
+class User {
+  // constructor(firstName, lastName, email, password, inviteCode, role)
+  firstName;   // String
+  lastName;    // String
+  email;       // String // varChar(255)
+  password;    // String // encrypted before write
+  token;       // String // assigned after successful login
+  role;        // Role
+}
 
 /**
  * Create a new user.
@@ -18,38 +28,35 @@ const prisma = new PrismaClient();
  */
 const createUser = async function createUser(data) {
   try {
-    const encryptedPassword = await bcrypt.hash(data.password, 10);
+    encryptedPassword = await bcrypt.hash(data.password, 10);
 
-    // validate inviteCode
-    const foundInvite = await prisma.invitation.findOne({
+    const foundInvite = await prisma.invitation.findFirst({
       where: {
         AND: [
           { code: data.inviteCode },
-          { expires: { gte: new Date() } },
-          { email: data.email },
+          { expiresAt: { gte: new Date() } },
+          // { inviteEmail: data.email },
         ],
       },
     });
-
     if (!foundInvite) {
       console.error('InviteCode missing or invalid');
       throw new CodedError({ code: 422, reason: registerError });
     }
 
     const user = await prisma.user.create({
-      firstName: data.firstName,
-      lastName: data.lastName,
-      email: data.email.toLowerCase(),
-      inviteCode: data.inviteCode.toLowerCase(),
-      password: encryptedPassword,
-      role: data.role || 'DINER', // Default to 'USER' if not provided
+      data: {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email.toLowerCase(),
+        password: encryptedPassword,
+        role: data.role || 'DINER', // Default to 'USER' if not provided
+      },
     });
 
     // TODO update the 'uses' count on the Invite code
-
     try {
-      const token = generateToken({ userId: user.id, email: user.email });
-      user.token = token;
+      user.token = await generateToken({ userId: user.id, email: user.email });
     } catch (ce) {
       console.error(`Token error.  ${ce.reason}`);
       throw new CodedError({ code: ce.code, reason: ce.reason });
@@ -75,32 +82,30 @@ const getUserById = async function getUserById(userId) {
     });
     const { id, firstName, lastName, email, password, role } = user;
     return { id, firstName, lastName, email, password, role };
-  } catch (error) {
-    console.error(
-      `Error fetching user with ID ${userId}:  ${JSON.stringify(error)}`,
-    );
+  } catch (err) {
+    console.error(`Error fetching user with ID ${userId}:  ${JSON.stringify(err)}`);
     throw new Error(findError);
   }
 };
 
 /**
  * Find a user by email.
- * @param {String} email
+ * @param {String} emailToSearch
  * @returns {Object} User object partial, containing firstName, lastName, email, and role
  * @throws {Error} If user not found or database error
  */
-const getUserByEmail = async function getUserByEmail(email) {
+const getUserByEmail = async function getUserByEmail(emailToSearch) {
   try {
     const user = await prisma.user.findUnique({
-      where: { email: email.toLowerCase() },
+      where: { email: emailToSearch.toLowerCase() },
     });
     if (!user) {
       throw new Error(findError);
     }
     const { id, firstName, lastName, email, password, role } = user;
     return { id, firstName, lastName, email, password, role };
-  } catch (error) {
-    console.error(`Error fetching user with email ${email}:  ${error}`);
+  } catch (err) {
+    console.error(`Error fetching user with email ${emailToSearch}:  ${err}`);
     throw new Error(findError);
   }
 };
@@ -120,9 +125,7 @@ const updateUser = async function updateUser(userId, data) {
       where: { OR: [ { id: userId }, { email: data.email } ] },
     });
     if (!foundUser) {
-      console.error(
-        `UPDATE:  User with ID ${userId} or email ${data.email} does not exist.`,
-      );
+      console.error(`UPDATE:  User with ID ${userId} or email ${data.email} does not exist.`);
       throw new Error(updateError);
     }
     const encryptedPassword =
@@ -135,7 +138,7 @@ const updateUser = async function updateUser(userId, data) {
         firstName: data.firstName,
         lastName: data.lastName,
         email: data.email,
-        inviteCode: data.inviteCode,
+        inviteCode: data.inviteCode,  // this isn't part of User anymore
         password: encryptedPassword,
         role: data.role || foundUser.role,
       },
@@ -147,7 +150,8 @@ const updateUser = async function updateUser(userId, data) {
   }
 };
 
-export default {
+module.exports = {
+  User,
   createUser,
   getUserByEmail,
   getUserById,

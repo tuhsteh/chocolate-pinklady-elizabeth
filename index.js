@@ -1,5 +1,5 @@
 const http = require('http');
-const app = require('./src/app');
+const app = require('./eetz-service/pg/src/app');
 const server = http.createServer(app);
 
 const { API_PORT } = process.env;

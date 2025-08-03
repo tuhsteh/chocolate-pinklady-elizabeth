@@ -1,5 +1,5 @@
-import jwt from 'jsonwebtoken';
-import CodedError from '../models/codedError';
+const jwt = require('jsonwebtoken');
+const { CodedError } = require('../models/codedError');
 
 const tokenError = 'Token Operation failed.';
 
@@ -18,8 +18,8 @@ const generateToken = async function generateToken(data) {
         { expiresIn: '15m' },
       );
       return token;
-    } catch (error) {
-      console.error('Data Error generating token.');
+    } catch (err) {
+      console.error(`Data Error generating token.  ${JSON.stringify(err)}`);
       throw new CodedError({ code: 422, reason: tokenError });
     }
   }
@@ -48,7 +48,7 @@ const verifyToken = async function verifyToken(data) {
   }
 };
 
-export default {
+module.exports = {
   generateToken,
   verifyToken,
 };
