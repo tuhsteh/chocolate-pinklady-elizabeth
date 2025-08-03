@@ -12,12 +12,12 @@ const prisma = new PrismaClient();
 
 class User {
   // constructor(firstName, lastName, email, password, inviteCode, role)
-  firstName;   // String
-  lastName;    // String
-  email;       // String // varChar(255)
-  password;    // String // encrypted before write
-  token;       // String // assigned after successful login
-  role;        // Role
+  firstName; // String
+  lastName; // String
+  email; // String // varChar(255)
+  password; // String // encrypted before write
+  token; // String // assigned after successful login
+  role; // Role
 }
 
 /**
@@ -83,7 +83,9 @@ const getUserById = async function getUserById(userId) {
     const { id, firstName, lastName, email, password, role } = user;
     return { id, firstName, lastName, email, password, role };
   } catch (err) {
-    console.error(`Error fetching user with ID ${userId}:  ${JSON.stringify(err)}`);
+    console.error(
+      `Error fetching user with ID ${userId}:  ${JSON.stringify(err)}`,
+    );
     throw new Error(findError);
   }
 };
@@ -125,7 +127,9 @@ const updateUser = async function updateUser(userId, data) {
       where: { OR: [ { id: userId }, { email: data.email } ] },
     });
     if (!foundUser) {
-      console.error(`UPDATE:  User with ID ${userId} or email ${data.email} does not exist.`);
+      console.error(
+        `UPDATE:  User with ID ${userId} or email ${data.email} does not exist.`,
+      );
       throw new Error(updateError);
     }
     const encryptedPassword =
@@ -138,7 +142,7 @@ const updateUser = async function updateUser(userId, data) {
         firstName: data.firstName,
         lastName: data.lastName,
         email: data.email,
-        inviteCode: data.inviteCode,  // this isn't part of User anymore
+        inviteCode: data.inviteCode, // this isn't part of User anymore
         password: encryptedPassword,
         role: data.role || foundUser.role,
       },

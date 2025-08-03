@@ -2,15 +2,21 @@ const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
 
 const { generateToken, verifyToken } = require('../middleware/auth');
-const { createUser, getUserById, getUserByEmail, updateUser } = require('../models/user');
+const {
+  createUser,
+  getUserById,
+  getUserByEmail,
+  updateUser,
+} = require('../models/user');
 
 const loginError = 'Failed to Login User.  Try again later.';
 const registerError = 'Failed to Register User.  Try again later.';
 
-module.exports = function(app) {  //https://stackoverflow.com/a/6059938
+module.exports = function (app) {
+  //https://stackoverflow.com/a/6059938
 
   const jsonParser = bodyParser.json();
-  
+
   /**
    * @route POST /register
    * @desc Register a new user.
@@ -22,7 +28,8 @@ module.exports = function(app) {  //https://stackoverflow.com/a/6059938
    */
   app.post('/register', jsonParser, async (req, res) => {
     try {
-      const { firstName, lastName, email, password, inviteCode, role } = req.body;
+      const { firstName, lastName, email, password, inviteCode, role } =
+        req.body;
       if (!(email && password && firstName && lastName && inviteCode)) {
         return res.status(400).json({ message: registerError });
       }
@@ -45,8 +52,10 @@ module.exports = function(app) {  //https://stackoverflow.com/a/6059938
         role,
       });
 
-      console.log(`User register:  [${user.firstName} ${user.lastName} <${user.email}>]`);
-      
+      console.log(
+        `User register:  [${user.firstName} ${user.lastName} <${user.email}>]`,
+      );
+
       res.set('x-access-token', user.token);
       res.status(201).json({
         user: {
@@ -91,12 +100,17 @@ module.exports = function(app) {  //https://stackoverflow.com/a/6059938
       const user = await getUserByEmail(email);
       if (user && (await bcrypt.compare(password, user.password))) {
         try {
-          user.token = await generateToken({ userId: user.id, email: user.email });
+          user.token = await generateToken({
+            userId: user.id,
+            email: user.email,
+          });
         } catch (ce) {
           return res.status(ce.code).json(ce.reason);
         }
 
-        console.log(`User login:  [${user.firstName} ${user.lastName} <${user.email}>]`);
+        console.log(
+          `User login:  [${user.firstName} ${user.lastName} <${user.email}>]`,
+        );
 
         return res.status(200).json({
           user: {
@@ -141,5 +155,4 @@ module.exports = function(app) {  //https://stackoverflow.com/a/6059938
    * @throws {500} Internal Server Error if retrieval fails
    */
   // TODO:  userRoutes.get('/me'...);
-
 };

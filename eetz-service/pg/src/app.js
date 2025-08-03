@@ -20,7 +20,9 @@ app.post('/hello', async (req, res) => {
         console.error(`Database query error:  ${err}`);
         return res.status(500).json({ message: 'Database query failed' });
       }
-      return res.status(200).json({ message: `Hello ${name}.  ` + result.rows[0].now });
+      return res
+        .status(200)
+        .json({ message: `Hello ${name}.  ` + result.rows[0].now });
     });
   } catch (err) {
     console.error(`Error in /hello:  ${JSON.stringify(err)}`);
