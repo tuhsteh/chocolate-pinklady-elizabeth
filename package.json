@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "yarn prettier --write . && yarn eslint --fix .",
-    "dev": "nodemon index.js",
-    "start": "node index.js",
+    "dev": "NODE_ENV=dev nodemon index.js",
+    "start": "NODE_ENV=papillon node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "tommy tom",

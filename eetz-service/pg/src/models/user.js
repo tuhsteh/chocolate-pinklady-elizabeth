@@ -50,7 +50,7 @@ const createUser = async function createUser(data) {
         lastName: data.lastName,
         email: data.email.toLowerCase(),
         password: encryptedPassword,
-        role: data.role || 'DINER', // Default to 'USER' if not provided
+        role: data.role || 'guest', // Default to 'guest' if not provided
       },
     });
 

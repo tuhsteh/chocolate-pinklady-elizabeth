@@ -15,6 +15,13 @@ export default [
     },
     rules: {
       '@stylistic/array-bracket-spacing': [ 'error', 'always' ],
+      '@stylistic/array-element-newline': [
+        'error',
+        {
+          ArrayExpression: 'consistent',
+          ArrayPattern: { minItems: 2 },
+        },
+      ],
       '@stylistic/arrow-spacing': 'error',
       '@stylistic/brace-style': [ 'error', '1tbs' ],
       '@stylistic/comma-dangle': [ 'error', 'always-multiline' ],

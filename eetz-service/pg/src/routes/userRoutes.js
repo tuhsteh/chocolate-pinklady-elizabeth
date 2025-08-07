@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
+const rbac = require('../middleware/rbac.js');
 
 const { generateToken, verifyToken } = require('../middleware/auth');
 const {

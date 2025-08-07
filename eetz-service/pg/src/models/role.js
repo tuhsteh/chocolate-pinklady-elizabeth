@@ -1,9 +1,17 @@
-class Role {
-  static DINER = 'DINER';
-  static SHOPPER = 'SHOPPER';
-  static ADMIN = 'ADMIN';
+const roles = require('../config/roles.json');
 
-  // maybe methods for permissions, but maybe those go in another class?
+class Role {
+  constructor() {
+    this.roles = roles.roles;
+  }
+
+  getRoleByName(name) {
+    return this.roles.find((role) => role.name === name);
+  }
+
+  getRoles() {
+    return this.roles;
+  }
 }
 
-export default Role;
+module.exports = Role;

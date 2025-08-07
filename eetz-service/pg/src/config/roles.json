@@ -1,0 +1,67 @@
+{
+  "roles": [
+    {
+      "name": "admin",
+      "permissions": [
+        "create_invitation",
+        "read_invitation",
+        "update_invitation",
+        "delete_invitation",
+        "create_recipe",
+        "read_recipe",
+        "update_recipe",
+        "delete_recipe",
+        "create_role",
+        "read_role",
+        "update_role",
+        "delete_role",
+        "create_schedule",
+        "read_schedule",
+        "update_schedule",
+        "delete_schedule",
+        "create_shopping_list",
+        "read_shopping_list",
+        "update_shopping_list",
+        "delete_shopping_list",
+        "create_user",
+        "read_user",
+        "update_user",
+        "delete_user"
+      ]
+    },
+    {
+      "name": "shopper",
+      "permissions": [
+        "create_recipe",
+        "read_recipe",
+        "update_recipe",
+        "delete_recipe",
+        "create_schedule",
+        "read_schedule",
+        "update_schedule",
+        "delete_schedule",
+        "create_shopping_list",
+        "read_shopping_list",
+        "update_shopping_list",
+        "delete_shopping_list"
+      ]
+    },
+    {
+      "name": "diner",
+      "permissions": [
+        "create_recipe",
+        "read_recipe",
+        "update_recipe",
+        "delete_recipe",
+        "create_schedule",
+        "read_schedule",
+        "update_schedule",
+        "delete_schedule"
+      ]
+    },
+    {
+      "name": "guest",
+      "permissions": ["read_recipe", "read_schedule", "read_shopping_list"]
+    }
+  ]
+}
