@@ -8,6 +8,22 @@ require('./routes/userRoutes.js')(app);
 
 app.use(express.json());
 
+// stop telling our whole trauma story to the world
+app.use((err, req, res, next) => {
+  var errResponse = {
+    message:
+      app.get('env') !== 'dev'
+        ? 'something went wrong.  ' +
+          "maybe it's something you did wrong.  " +
+          'maybe you should feel bad about it.  ' +
+          'think about it.  ' +
+          "think about what you've done wrong."
+        : err.message,
+  };
+  console.log(`${new Date().toISOString()}  ${err.message}`);
+  res.status(500).json(errResponse);
+});
+
 app.post('/hello', async (req, res) => {
   try {
     const { name = 'user' } = req.body;
