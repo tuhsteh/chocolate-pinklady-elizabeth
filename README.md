@@ -27,8 +27,9 @@ Application for Creating a Weekly Calendar for Meal Planning. Includes recipes, 
 
 ### Infrastructure
 
+- [ ] nail version numbers in place
 - [ ] SSL (see [Let'sEncrypt](https://letsencrypt.org), or option provided by hosting service)
-- [X] Database (using MongoDB, but lots of hosting offers PostGRES primarily; can use JSON data type; requires migration/code-adaptation)
+- [x] Database (using MongoDB, but lots of hosting offers PostGRES primarily; can use JSON data type; requires migration/code-adaptation)
 - [ ] injectable JSON data for initialization of a new install (e.g. `yarn init` => writes data from `roles.json` into database)
 - [ ] containerization
 - [ ] hosting (see [Render](https://render.com/), [Heroku](https://www.heroku.com/), other options)
