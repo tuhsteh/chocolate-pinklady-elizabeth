@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
   output   = "../src/generated/prisma"
@@ -15,46 +9,46 @@ datasource db {
 }
 
 model User {
-  id           Int         @id @default(autoincrement())
-  email        String      @unique @db.VarChar(255)
-  firstName    String
-  lastName     String
-  password     String
-  role         Role        @default(SHOPPER)
+  id          Int          @id @default(autoincrement())
+  email       String       @unique @db.VarChar(255)
+  firstName   String
+  lastName    String
+  password    String
+  role        Role         @default(GUEST)
+  invitations Invitation[]
+  recipes     Recipe[]
 
-  recipes      Recipe[]
-  invitations  Invitation[]
-
-  @@unique([firstName,lastName])
+  @@unique([firstName, lastName])
 }
 
 model Invitation {
-  id           Int         @id @default(autoincrement())
-  createdAt    DateTime    @default(now())
-  expiresAt    DateTime
-  creator      User        @relation(fields: [creatorId], references: [id])
-  creatorId    Int
-  uses         Int         @default(0)
-  code         String      @unique @default(cuid())
-  inviteEmail  String      @db.VarChar(255)
-}
-
-enum Role {
-  DINER
-  SHOPPER
-  ADMIN
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  expiresAt   DateTime
+  creatorId   Int
+  uses        Int      @default(0)
+  code        String   @unique @default(cuid())
+  inviteEmail String   @db.VarChar(255)
+  creator     User     @relation(fields: [creatorId], references: [id])
 }
 
 model Recipe {
-  id           Int         @id @default(autoincrement())
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt
-  title        String      @db.VarChar(255)
-  url          String?     @db.VarChar(255)
-  ingredients  String[]  
-  creator      User        @relation(fields: [creatorId], references: [id])
-  creatorId    Int
-  complexity   Complexity   
+  id          Int        @id @default(autoincrement())
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  title       String     @db.VarChar(255)
+  url         String?    @db.VarChar(255)
+  ingredients String[]
+  creatorId   Int
+  complexity  Complexity
+  creator     User       @relation(fields: [creatorId], references: [id])
+}
+
+enum Role {
+  GUEST
+  DINER
+  SHOPPER
+  ADMIN
 }
 
 enum Complexity {
