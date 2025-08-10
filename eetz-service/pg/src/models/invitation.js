@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+const { PrismaClient } = require('../generated/prisma');
 
 const { CodedError } = require('./codedError.js');
 const prisma = new PrismaClient();
