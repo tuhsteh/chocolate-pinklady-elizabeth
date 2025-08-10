@@ -31,7 +31,6 @@ app.use((err, req, res, next) => {
   next(err);
 });
 
-
 app.post('/hello', async (req, res) => {
   try {
     const { name = 'user' } = req.body;
