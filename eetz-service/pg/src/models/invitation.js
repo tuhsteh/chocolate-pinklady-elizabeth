@@ -28,40 +28,41 @@ const createInvitation = async function createInvitation(data) {
   try {
     if (!data.creatorId || !data.inviteEmail) {
       console.error('Missing required fields for creating invitation');
-      throw new CodedError({ code:  422, reason: createInviteError });
+      throw new CodedError({ code: 422, reason: createInviteError });
     }
     const invitation = await prisma.invitation.create({
       data: {
         creatorId: data.creatorId,
         inviteEmail: data.inviteEmail.toLowerCase(),
-        expiresAt: data.expiresAt || new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // Default to 7 days
+        expiresAt:
+          data.expiresAt || new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // Default to 7 days
       },
     });
     if (!invitation) {
       console.error('Failed to create invitation');
-      throw new CodedError({ code:  500, reason: createInviteError });
+      throw new CodedError({ code: 500, reason: createInviteError });
     }
     const storedInvite = await prisma.invitation.findFirst({
       where: { inviteEmail: data.inviteEmail.toLowerCase() },
     });
     if (!storedInvite) {
       console.error('Failed to retrieve created invitation');
-      throw new CodedError({ code:  500, reason: findInviteError });
+      throw new CodedError({ code: 500, reason: findInviteError });
     }
     invitation.code = storedInvite.code;
     return invitation;
   } catch (error) {
     console.error('Error creating invitation:', error);
-    throw new CodedError({ code:  500, reason: createInviteError });
+    throw new CodedError({ code: 500, reason: createInviteError });
   }
-}
+};
 
 /**
  * See if we have an invite code for that email that hasn't expired yet.
- * @param {String} inviteCode 
- * @param {String} email 
+ * @param {String} inviteCode
+ * @param {String} email
  */
-const inviteValid = async function(inviteCode, email) {
+const inviteValid = async function (inviteCode, email) {
   const existingInvite = await prisma.invitation.findFirst({
     where: {
       AND: [
@@ -73,23 +74,23 @@ const inviteValid = async function(inviteCode, email) {
   });
   if (!existingInvite) {
     console.error('InviteCode missing or invalid');
-    throw new CodedError({ code:  404, reason: findInviteError });
+    throw new CodedError({ code: 404, reason: findInviteError });
   }
   if (existingInvite.uses >= 1) {
     console.error('InviteCode already used');
-    throw new CodedError({ code:  410, reason: findInviteError });
+    throw new CodedError({ code: 410, reason: findInviteError });
   }
   return existingInvite.code;
-}
+};
 
-const useInvite = async function(inviteCode) {
+const useInvite = async function (inviteCode) {
   try {
     const existingInvite = await prisma.invitation.findUnique({
       where: { code: inviteCode },
     });
     if (!existingInvite) {
       console.error('InviteCode missing or invalid');
-      throw new CodedError({ code:  404, reason: findInviteError });
+      throw new CodedError({ code: 404, reason: findInviteError });
     }
     const updatedInvite = await prisma.invitation.update({
       where: { id: existingInvite.id },
@@ -97,18 +98,18 @@ const useInvite = async function(inviteCode) {
     });
     if (!updatedInvite) {
       console.error('Failed to update invitation uses');
-      throw new CodedError({ code:  500, reason: useInviteError });
+      throw new CodedError({ code: 500, reason: useInviteError });
     }
     return updatedInvite;
   } catch (error) {
     console.error('Error updating invitation uses:', error);
-    throw new CodedError({ code:  500, reason: useInviteError });
+    throw new CodedError({ code: 500, reason: useInviteError });
   }
-}
+};
 
 module.exports = {
   Invitation,
   createInvitation,
   inviteValid,
   useInvite,
-}
+};
