@@ -28,7 +28,7 @@ const createInvitation = async function createInvitation(data) {
   try {
     if (!data.creatorId || !data.inviteEmail) {
       console.error('Missing required fields for creating invitation');
-      throw new CodedError({ code: 422, reason: createInviteError });
+      return new CodedError({ code: 422, reason: createInviteError });
     }
     const invitation = await prisma.invitation.create({
       data: {
@@ -40,20 +40,20 @@ const createInvitation = async function createInvitation(data) {
     });
     if (!invitation) {
       console.error('Failed to create invitation');
-      throw new CodedError({ code: 500, reason: createInviteError });
+      return new CodedError({ code: 500, reason: createInviteError });
     }
     const storedInvite = await prisma.invitation.findFirst({
       where: { inviteEmail: data.inviteEmail.toLowerCase() },
     });
     if (!storedInvite) {
       console.error('Failed to retrieve created invitation');
-      throw new CodedError({ code: 500, reason: findInviteError });
+      return new CodedError({ code: 500, reason: findInviteError });
     }
     invitation.code = storedInvite.code;
     return invitation;
   } catch (error) {
     console.error('Error creating invitation:', error);
-    throw new CodedError({ code: 500, reason: createInviteError });
+    return new CodedError({ code: 500, reason: createInviteError });
   }
 };
 
@@ -74,11 +74,11 @@ const inviteValid = async function (inviteCode, email) {
   });
   if (!existingInvite) {
     console.error('InviteCode missing or invalid');
-    throw new CodedError({ code: 404, reason: findInviteError });
+    return new CodedError({ code: 404, reason: findInviteError });
   }
   if (existingInvite.uses >= 1) {
     console.error('InviteCode already used');
-    throw new CodedError({ code: 410, reason: findInviteError });
+    return new CodedError({ code: 410, reason: findInviteError });
   }
   return existingInvite.code;
 };
@@ -90,7 +90,7 @@ const useInvite = async function (inviteCode) {
     });
     if (!existingInvite) {
       console.error('InviteCode missing or invalid');
-      throw new CodedError({ code: 404, reason: findInviteError });
+      return new CodedError({ code: 404, reason: findInviteError });
     }
     const updatedInvite = await prisma.invitation.update({
       where: { id: existingInvite.id },
@@ -98,12 +98,12 @@ const useInvite = async function (inviteCode) {
     });
     if (!updatedInvite) {
       console.error('Failed to update invitation uses');
-      throw new CodedError({ code: 500, reason: useInviteError });
+      return new CodedError({ code: 500, reason: useInviteError });
     }
     return updatedInvite;
   } catch (error) {
     console.error('Error updating invitation uses:', error);
-    throw new CodedError({ code: 500, reason: useInviteError });
+    return new CodedError({ code: 500, reason: useInviteError });
   }
 };
 
