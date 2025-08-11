@@ -139,7 +139,9 @@ module.exports = function (app) {
    */
   app.post('/welcome', async (req, res) => {
     const token =
-      req.body.token || req.query.token || req.headers['x-access-token'];
+      (req.body && req.body.token) ||
+      (req.query && req.query.token) ||
+      req.headers['x-access-token'];
     const userOrError = verifyToken(token);
     if (userOrError.code && userOrError.reason) {
       return res.status(userOrError.code).json(userOrError.reason);

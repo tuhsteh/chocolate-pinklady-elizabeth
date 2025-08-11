@@ -4,24 +4,31 @@ const { pool } = require('./config/database');
 const express = require('express');
 
 const app = express();
+require('./routes/inviteRoutes.js')(app);
 require('./routes/userRoutes.js')(app);
 
 app.use(express.json());
 
 // stop telling our whole trauma story to the world
 app.use((err, req, res, next) => {
-  var errResponse = {
-    message:
-      app.get('env') !== 'dev'
-        ? 'something went wrong.  ' +
-          "maybe it's something you did wrong.  " +
-          'maybe you should feel bad about it.  ' +
-          'think about it.  ' +
-          "think about what you've done wrong."
-        : err.message,
-  };
-  console.log(`${new Date().toISOString()}  ${err.message}`);
-  res.status(500).json(errResponse);
+  if (req.xhr) {
+    var errResponse = {
+      message:
+        app.get('env') !== 'dev'
+          ? 'something went wrong.  ' +
+            "maybe it's something you did wrong.  " +
+            'maybe you should feel bad about it.  ' +
+            'think about it.  ' +
+            "think about what you've done wrong."
+          : err.message,
+    };
+    console.log(`${new Date().toISOString()}  ${err.message}`);
+    res.status(500).json(errResponse);
+  } else if (err.code && err.reason) {
+    console.error(`CodedError:  ${err.reason}`);
+    return res.status(err.code).json({ message: err.reason });
+  }
+  next(err);
 });
 
 app.post('/hello', async (req, res) => {

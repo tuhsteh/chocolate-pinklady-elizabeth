@@ -1,9 +1,9 @@
 class CodedError extends Error {
-  constructor(message, { code, reason }) {
-    super(reason);
+  constructor(message) {
+    super(message.reason);
     this.name = 'CodedError';
-    this.code = code;
-    this.reason = reason;
+    this.code = message.code || 500;
+    this.reason = message.reason || message;
   }
 }
 

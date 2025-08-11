@@ -11,13 +11,16 @@ const updateError = 'User Operation Failed.';
 const prisma = new PrismaClient();
 
 class User {
-  // constructor(firstName, lastName, email, password, inviteCode, role)
-  firstName; // String
-  lastName; // String
-  email; // String // varChar(255)
-  password; // String // encrypted before write
-  token; // String // assigned after successful login
-  role; // Role
+  constructor(firstName, lastName, email, password, inviteCode, role) {
+    this.firstName = firstName; // String
+    this.lastName = lastName; // String
+    this.email = email.toLowerCase(); // String
+    this.password = password; // String
+    this.inviteCode = inviteCode; // String
+    this.role = role || 'guest'; // String, default to 'guest'
+  }
+  id;
+  token;
 }
 
 /**

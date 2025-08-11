@@ -19,3 +19,5 @@ const checkPermission = function checkPermission(permission) {
 // from https://medium.com/@jayantchoudhary271/building-role-based-access-control-rbac-in-node-js-and-express-js-bc870ec32bdb
 // mark endpoints with the rbac and check the permission there:
 // e.g. router.get('/records', rbacMiddleware.checkPermission('read_record'), recordsController.getAllRecord);
+
+module.exports = { checkPermission };
